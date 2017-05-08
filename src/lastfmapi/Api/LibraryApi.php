@@ -1,18 +1,21 @@
 <?php
+
 namespace LastFmApi\Api;
 
 use LastFmApi\Exception\InvalidArgumentException;
 use LastFmApi\Exception\NotAuthenticatedException;
+
 /**
- * Allows access to the api requests relating to user libraries
+ * Allows access to the api requests relating to user libraries.
  */
 class LibraryApi extends BaseApi
 {
-
     /**
-     * Add an album to a user's Last.fm library (Requires full auth)
+     * Add an album to a user's Last.fm library (Requires full auth).
+     *
      * @param array $methodVars An array with the following required values: <i>artist</i>, <i>album</i>
-     * @return boolean
+     *
+     * @return bool
      */
     public function addAlbum($methodVars)
     {
@@ -20,11 +23,11 @@ class LibraryApi extends BaseApi
         if ($this->fullAuth == true) {
             // Check for required variables
             if (!empty($methodVars['artist']) && !empty($methodVars['album'])) {
-                $vars = array(
-                    'method' => 'library.addalbum',
+                $vars = [
+                    'method'  => 'library.addalbum',
                     'api_key' => $this->auth->apiKey,
-                    'sk' => $this->auth->sessionKey
-                );
+                    'sk'      => $this->auth->sessionKey,
+                ];
                 $vars = array_merge($vars, $methodVars);
                 $sig = $this->apiSig($this->auth->apiSecret, $vars);
                 $vars['api_sig'] = $sig;
@@ -38,14 +41,16 @@ class LibraryApi extends BaseApi
                 throw new InvalidArgumentException('You must include artist and album varialbes in the call for this method');
             }
         } else {
-            throw new NotAuthenticatedException('Method requires full auth. Call auth.getSession using lastfmApiAuth class');;
+            throw new NotAuthenticatedException('Method requires full auth. Call auth.getSession using lastfmApiAuth class');
         }
     }
 
     /**
-     * Add an artist to a user's Last.fm library (Requires full auth)
+     * Add an artist to a user's Last.fm library (Requires full auth).
+     *
      * @param array $methodVars An array with the following required values: <i>artist</i>
-     * @return boolean
+     *
+     * @return bool
      */
     public function addArtist($methodVars)
     {
@@ -53,11 +58,11 @@ class LibraryApi extends BaseApi
         if ($this->fullAuth == true) {
             // Check for required variables
             if (!empty($methodVars['artist'])) {
-                $vars = array(
-                    'method' => 'library.addartist',
+                $vars = [
+                    'method'  => 'library.addartist',
                     'api_key' => $this->auth->apiKey,
-                    'sk' => $this->auth->sessionKey
-                );
+                    'sk'      => $this->auth->sessionKey,
+                ];
                 $vars = array_merge($vars, $methodVars);
                 $sig = $this->apiSig($this->auth->apiSecret, $vars);
                 $vars['api_sig'] = $sig;
@@ -71,14 +76,16 @@ class LibraryApi extends BaseApi
                 throw new InvalidArgumentException('You must include artist varialbe in the call for this method');
             }
         } else {
-            throw new NotAuthenticatedException('Method requires full auth. Call auth.getSession using lastfmApiAuth class');;
+            throw new NotAuthenticatedException('Method requires full auth. Call auth.getSession using lastfmApiAuth class');
         }
     }
 
     /**
-     * Add a track to a user's Last.fm library (Requires full auth)
+     * Add a track to a user's Last.fm library (Requires full auth).
+     *
      * @param array $methodVars An array with the following required values: <i>artist</i>, <i>track</i>
-     * @return boolean
+     *
+     * @return bool
      */
     public function addTrack($methodVars)
     {
@@ -86,11 +93,11 @@ class LibraryApi extends BaseApi
         if ($this->fullAuth == true) {
             // Check for required variables
             if (!empty($methodVars['artist']) && !empty($methodVars['track'])) {
-                $vars = array(
-                    'method' => 'library.addtrack',
+                $vars = [
+                    'method'  => 'library.addtrack',
                     'api_key' => $this->auth->apiKey,
-                    'sk' => $this->auth->sessionKey
-                );
+                    'sk'      => $this->auth->sessionKey,
+                ];
                 $vars = array_merge($vars, $methodVars);
                 $sig = $this->apiSig($this->auth->apiSecret, $vars);
                 $vars['api_sig'] = $sig;
@@ -109,19 +116,22 @@ class LibraryApi extends BaseApi
     }
 
     /**
-     * A paginated list of all the albums in a user's library, with play counts and tag counts
+     * A paginated list of all the albums in a user's library, with play counts and tag counts.
+     *
      * @deprecated as of march 15 2016, 'library.getalbums' service is not available
+     *
      * @param array $methodVars An array with the following required values: <i>user</i> and optional values: <i>page</i>, <i>limit</i>
+     *
      * @return array
      */
     public function getAlbums($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'library.getalbums',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'library.getalbums',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -144,6 +154,7 @@ class LibraryApi extends BaseApi
                     $albums['results'][$i]['image']['large'] = (string) $album->image[2];
                     $i++;
                 }
+
                 return $albums;
             } else {
                 return false;
@@ -154,18 +165,20 @@ class LibraryApi extends BaseApi
     }
 
     /**
-     * A paginated list of all the artists in a user's library, with play counts and tag counts
+     * A paginated list of all the artists in a user's library, with play counts and tag counts.
+     *
      * @param array $methodVars An array with the following required values: <i>user</i> and optional values: <i>page</i>, <i>limit</i>
+     *
      * @return array
      */
     public function getArtists($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'library.getartists',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'library.getartists',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -186,6 +199,7 @@ class LibraryApi extends BaseApi
                     $artists['results'][$i]['image']['large'] = (string) $artist->image[2];
                     $i++;
                 }
+
                 return $artists;
             } else {
                 return false;
@@ -196,18 +210,20 @@ class LibraryApi extends BaseApi
     }
 
     /**
-     * A paginated list of all the tracks in a user's library, with play counts and tag counts
+     * A paginated list of all the tracks in a user's library, with play counts and tag counts.
+     *
      * @param array $methodVars An array with the following required values: <i>user</i> and optional values: <i>page</i>, <i>limit</i>
+     *
      * @return array
      */
     public function getTracks($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'library.gettracks',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'library.gettracks',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -231,6 +247,7 @@ class LibraryApi extends BaseApi
                     $tracks['results'][$i]['image']['large'] = (string) $track->image[2];
                     $i++;
                 }
+
                 return $tracks;
             } else {
                 return false;
@@ -239,5 +256,4 @@ class LibraryApi extends BaseApi
             throw new InvalidArgumentException('You must include a user variable in the call for this method');
         }
     }
-
 }

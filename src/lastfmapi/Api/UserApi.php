@@ -5,26 +5,29 @@ namespace LastFmApi\Api;
 use LastFmApi\Exception\InvalidArgumentException;
 use LastFmApi\Exception\NoResultsException;
 use LastFmApi\Exception\NotAuthenticatedException;
+
 /**
- * Allows access to the api requests relating to users
+ * Allows access to the api requests relating to users.
  */
 class UserApi extends BaseApi
 {
-
     /**
-     * Get a list of upcoming events that this user is attending
+     * Get a list of upcoming events that this user is attending.
+     *
      * @deprecated as of march 15 2016, 'user.getevents' method is not available
+     *
      * @param array $methodVars An array with the following required values: <i>user</i>
+     *
      * @return array
      */
     public function getEvents($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.getevents',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.getevents',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -59,6 +62,7 @@ class UserApi extends BaseApi
                         $events[$i]['url'] = (string) $event->url;
                         $i++;
                     }
+
                     return $events;
                 } else {
                     throw new NoResultsException('This user has no events');
@@ -72,18 +76,20 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get a list of the user's friends on Last.fm
+     * Get a list of the user's friends on Last.fm.
+     *
      * @param array $methodVars An array with the following required values: <i>user</i>
+     *
      * @return array
      */
     public function getFriends($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.getfriends',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.getfriends',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -119,19 +125,21 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get information about a user profile (Requires full auth)
+     * Get information about a user profile (Requires full auth).
+     *
      * @param array $methodVars An array with the following required values: <i>user</i>
+     *
      * @return array
      */
-    public function getInfo($methodVars = Array())
+    public function getInfo($methodVars = [])
     {
         // Only allow full authed calls
         if ($this->fullAuth == true) {
-            $vars = array(
-                'method' => 'user.getinfo',
+            $vars = [
+                'method'  => 'user.getinfo',
                 'api_key' => $this->auth->apiKey,
-                'sk' => $this->auth->sessionKey
-            );
+                'sk'      => $this->auth->sessionKey,
+            ];
             $vars = array_merge($vars, $methodVars);
             $apiSig = $this->apiSig($this->auth->apiSecret, $vars);
             $vars['api_sig'] = $apiSig;
@@ -159,18 +167,20 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get the last 50 tracks loved by a user
+     * Get the last 50 tracks loved by a user.
+     *
      * @param array $methodVars An array with the following required values: <i>user</i>
+     *
      * @return array
      */
     public function getLovedTracks($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.getlovedtracks',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.getlovedtracks',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -203,19 +213,22 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get a list of a user's neighbours on Last.fm
+     * Get a list of a user's neighbours on Last.fm.
+     *
      * @deprecated as of march 15 2016, 'user.getneighbours' method is not available
+     *
      * @param array $methodVars An array with the following required values: <i>user</i>
+     *
      * @return array
      */
     public function getNeighbours($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.getneighbours',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.getneighbours',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
             if (!empty($methodVars['limit'])) {
                 $vars['limit'] = $methodVars['limit'];
@@ -245,19 +258,22 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get a paginated list of all events a user has attended in the past
+     * Get a paginated list of all events a user has attended in the past.
+     *
      * @deprecated as of march 15 2016, 'user.getpastevents' method is not available
+     *
      * @param array $methodVars An array with the following required values: <i>user</i>
+     *
      * @return array
      */
     public function getPastEvents($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.getpastevents',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.getpastevents',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -305,19 +321,22 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get a list of a user's playlists on Last.fm
+     * Get a list of a user's playlists on Last.fm.
+     *
      * @deprecated as of march 15 2016, 'user.getplaylists' method is not available
+     *
      * @param array $methodVars An array with the following required values: <i>user</i>
+     *
      * @return array
      */
     public function getPlaylists($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.getplaylists',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.getplaylists',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -346,18 +365,20 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get a list of the recent tracks listened to by this user. Indicates now playing track if the user is currently listening
+     * Get a list of the recent tracks listened to by this user. Indicates now playing track if the user is currently listening.
+     *
      * @param array $methodVars An array with the following required values: <i>user</i>
+     *
      * @return array
      */
     public function getRecentTracks($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.getrecenttracks',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.getrecenttracks',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -395,20 +416,23 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get Last.fm artist recommendations for a user (Requires full auth)
+     * Get Last.fm artist recommendations for a user (Requires full auth).
+     *
      * @deprecated as of march 15 2016, 'user.getrecommendedartists' method is not available
+     *
      * @param array $methodVars An array with the following optional values: <i>limit</i>, <i>page</i>
+     *
      * @return array
      */
-    public function getRecommendedArtists($methodVars = Array())
+    public function getRecommendedArtists($methodVars = [])
     {
         // Only allow full authed calls
         if ($this->fullAuth == true) {
-            $vars = array(
-                'method' => 'user.getrecommendedartists',
+            $vars = [
+                'method'  => 'user.getrecommendedartists',
                 'api_key' => $this->auth->apiKey,
-                'sk' => $this->auth->sessionKey
-            );
+                'sk'      => $this->auth->sessionKey,
+            ];
             $vars = array_merge($vars, $methodVars);
             $apiSig = $this->apiSig($this->auth->apiSecret, $vars);
             $vars['api_sig'] = $apiSig;
@@ -446,20 +470,23 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get a paginated list of all events recommended to a user by Last.fm, based on their listening profile (Requires full auth)
+     * Get a paginated list of all events recommended to a user by Last.fm, based on their listening profile (Requires full auth).
+     *
      * @deprecated as of march 15 2016, 'user.getrecommendedevents' method is not available
+     *
      * @param array $methodVars An array with the following optional values: <i>page</i>, <i>limit</i>
+     *
      * @return array
      */
-    public function getRecommendedEvents($methodVars = Array())
+    public function getRecommendedEvents($methodVars = [])
     {
         // Only allow full authed calls
         if ($this->fullAuth == true) {
-            $vars = array(
-                'method' => 'user.getrecommendedevents',
+            $vars = [
+                'method'  => 'user.getrecommendedevents',
                 'api_key' => $this->auth->apiKey,
-                'sk' => $this->auth->sessionKey
-            );
+                'sk'      => $this->auth->sessionKey,
+            ];
             $vars = array_merge($vars, $methodVars);
             $apiSig = $this->apiSig($this->auth->apiSecret, $vars);
             $vars['api_sig'] = $apiSig;
@@ -517,18 +544,21 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get shouts for this user
+     * Get shouts for this user.
+     *
      * @param array $methodVars An array with the following required values: <i>user</i>
+     *
      * @deprecated as of march 15 2016, 'user.getshouts' method is not available
+     *
      * @return array
      */
     public function getShouts($methodVars)
     {
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.getshouts',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.getshouts',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -552,18 +582,20 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get the top albums listened to by a user. You can stipulate a time period. Sends the overall chart by default
+     * Get the top albums listened to by a user. You can stipulate a time period. Sends the overall chart by default.
+     *
      * @param array $methodVars An array with the following required values: <i>user</i> and optional value: <i>period</i>
+     *
      * @return array
      */
     public function getTopAlbums($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.gettopalbums',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.gettopalbums',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -596,18 +628,20 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get the top artists listened to by a user. You can stipulate a time period. Sends the overall chart by default
+     * Get the top artists listened to by a user. You can stipulate a time period. Sends the overall chart by default.
+     *
      * @param array $methodVars An array with the following required values: <i>user</i> and optional value: <i>period</i>
+     *
      * @return array
      */
     public function getTopArtists($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.gettopartists',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.gettopartists',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -639,18 +673,20 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get the top tags used by this user
+     * Get the top tags used by this user.
+     *
      * @param array $methodVars An array with the following required values: <i>user</i> and optional value: <i>limit</i>
+     *
      * @return array
      */
     public function getTopTags($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.gettoptags',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.gettoptags',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -676,18 +712,20 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get the top tracks listened to by a user. You can stipulate a time period. Sends the overall chart by default
+     * Get the top tracks listened to by a user. You can stipulate a time period. Sends the overall chart by default.
+     *
      * @param array $methodVars An array with the following required values: <i>user</i> and optional value: <i>period</i>
+     *
      * @return array
      */
     public function getTopTracks($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.gettoptracks',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.gettoptracks',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -723,18 +761,20 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get an album chart for a user profile, for a given date range. If no date range is supplied, it will return the most recent album chart for this user
+     * Get an album chart for a user profile, for a given date range. If no date range is supplied, it will return the most recent album chart for this user.
+     *
      * @param array $methodVars An array with the following required values: <i>user</i> and optional values: <i>to</i>, <i>from</i>
+     *
      * @return array
      */
     public function getWeeklyAlbumChart($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.getweeklyalbumchart',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.getweeklyalbumchart',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -760,18 +800,20 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get an artist chart for a user profile, for a given date range. If no date range is supplied, it will return the most recent artist chart for this user
+     * Get an artist chart for a user profile, for a given date range. If no date range is supplied, it will return the most recent artist chart for this user.
+     *
      * @param array $methodVars An array with the following required values: <i>user</i> and optional values: <i>to</i>, <i>from</i>
+     *
      * @return array
      */
     public function getWeeklyArtistChart($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.getweeklyartistchart',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.getweeklyartistchart',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -795,18 +837,20 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get a list of available charts for this user, expressed as date ranges which can be sent to the chart services
+     * Get a list of available charts for this user, expressed as date ranges which can be sent to the chart services.
+     *
      * @param array $methodVars An array with the following required values: <i>user</i>
+     *
      * @return array
      */
     public function getWeeklyChartList($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.getweeklychartlist',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.getweeklychartlist',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -827,18 +871,20 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Get a track chart for a user profile, for a given date range. If no date range is supplied, it will return the most recent track chart for this user
+     * Get a track chart for a user profile, for a given date range. If no date range is supplied, it will return the most recent track chart for this user.
+     *
      * @param array $methodVars An array with the following required values: <i>user</i> and optional values: <i>to</i>, <i>from</i>
+     *
      * @return array
      */
     public function getWeeklyTrackChart($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['user'])) {
-            $vars = array(
-                'method' => 'user.getweeklytrackchart',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'user.getweeklytrackchart',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -864,9 +910,11 @@ class UserApi extends BaseApi
     }
 
     /**
-     * Shout on this user's shoutbox (Requires full auth)
+     * Shout on this user's shoutbox (Requires full auth).
+     *
      * @param array $methodVars An array with the following required values: <i>user</i>, <i>message</i>
-     * @return boolean
+     *
+     * @return bool
      */
     public function shout($methodVars)
     {
@@ -874,11 +922,11 @@ class UserApi extends BaseApi
         if ($this->fullAuth == true) {
             // Check for required variables
             if (!empty($methodVars['user']) && !empty($methodVars['message'])) {
-                $vars = array(
-                    'method' => 'user.shout',
+                $vars = [
+                    'method'  => 'user.shout',
                     'api_key' => $this->auth->apiKey,
-                    'sk' => $this->auth->sessionKey
-                );
+                    'sk'      => $this->auth->sessionKey,
+                ];
                 $vars = array_merge($vars, $methodVars);
                 $sig = $this->apiSig($this->auth->apiSecret, $vars);
                 $vars['api_sig'] = $sig;
@@ -895,5 +943,4 @@ class UserApi extends BaseApi
             throw new NotAuthenticatedException('Method requires full auth. Call auth.getSession using lastfmApiAuth class');
         }
     }
-
 }

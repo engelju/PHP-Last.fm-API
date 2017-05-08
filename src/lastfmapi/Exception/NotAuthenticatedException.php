@@ -1,8 +1,9 @@
 <?php
 
 namespace LastFmApi\Exception;
+
 /**
- * NotAuthenticatedException
+ * NotAuthenticatedException.
  *
  * @author Marcos Peña
  */

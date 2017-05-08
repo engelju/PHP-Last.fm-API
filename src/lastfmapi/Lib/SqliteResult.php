@@ -3,29 +3,32 @@
 namespace LastFmApi\Lib;
 
 /**
- * A class which allows interaction with results when a query is run by Sqlite
+ * A class which allows interaction with results when a query is run by Sqlite.
  *
  * @author Marcos Peña
  */
 class SqliteResult
 {
-
     /**
-     * Stores the sqlite class
+     * Stores the sqlite class.
+     *
      * @var class
      */
-    var $sqlite;
+    public $sqlite;
 
     /**
-     * Stores the query
+     * Stores the query.
+     *
      * @var class
      */
-    var $query;
+    public $query;
 
     /**
-     * Constructor
+     * Constructor.
+     *
      * @param class $sqlite The sqlite class
-     * @param class $query The query
+     * @param class $query  The query
+     *
      * @return void
      */
     public function __construct(&$sqlite, $query)
@@ -35,15 +38,17 @@ class SqliteResult
     }
 
     /**
-     * Fetches the next result
+     * Fetches the next result.
+     *
      * @return array
      */
-    function fetch()
+    public function fetch()
     {
         if ($row = sqlite_fetch_array($this->query)) {
             return $row;
-        } else if ($this->size() > 0) {
+        } elseif ($this->size() > 0) {
             sqlite_seek($this->query, 0);
+
             return false;
         } else {
             return false;
@@ -51,25 +56,27 @@ class SqliteResult
     }
 
     /**
-     * Fetches all the results
+     * Fetches all the results.
+     *
      * @return array
      */
-    function fetchAll()
+    public function fetchAll()
     {
-        $result = array();
+        $result = [];
         while ($row = sqlite_fetch_array($this->query)) {
             $result[] = $row;
         }
+
         return $result;
     }
 
     /**
-     * Shows the number of results
-     * @return integer
+     * Shows the number of results.
+     *
+     * @return int
      */
-    function size()
+    public function size()
     {
         return sqlite_num_rows($this->query);
     }
-
 }

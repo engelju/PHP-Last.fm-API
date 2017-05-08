@@ -1,8 +1,9 @@
 <?php
 
 namespace LastFmApi\Exception;
+
 /**
- * CacheException
+ * CacheException.
  *
  * @author Marcos Peña
  */

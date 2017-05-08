@@ -3,49 +3,54 @@
 namespace LastFmApi\Lib;
 
 /**
- * Stores the socket methods
+ * Stores the socket methods.
  */
 
 /**
- * Allows access to the socket methods using a standard class
+ * Allows access to the socket methods using a standard class.
  */
 class Socket
 {
-
     /**
-     * Stores the socket handler
+     * Stores the socket handler.
+     *
      * @var class
      */
     private $handle;
 
     /**
-     * Stores the host name
+     * Stores the host name.
+     *
      * @var string
      */
     private $host;
 
     /**
-     * Stores the port number
-     * @var integer
+     * Stores the port number.
+     *
+     * @var int
      */
     private $port;
 
     /**
-     * Stores the error string
+     * Stores the error string.
+     *
      * @var string
      */
     public $error_string;
 
     /**
-     * Stores the error number
-     * @var integer
+     * Stores the error number.
+     *
+     * @var int
      */
     public $error_number;
 
     /**
-     * Constructor
+     * Constructor.
+     *
      * @param string $host The host name
-     * @param integer $port The port number
+     * @param int    $port The port number
      */
     public function __construct($host, $port)
     {
@@ -56,17 +61,19 @@ class Socket
         // Open a connection in the class variable
         $this->handle = @fsockopen($this->host, $this->port, $this->error_number, $this->error_string);
         if (!$this->handle) {
-            throw new \Exception("error opening socket");
+            throw new \Exception('error opening socket');
         }
     }
 
     /**
-     * Send data through the socket and listen for a return
-     * @param string $msg Data to send
+     * Send data through the socket and listen for a return.
+     *
+     * @param string $msg  Data to send
      * @param string $type The type of data to return (array or string)
+     *
      * @return string|array
      */
-    function send($msg, $type = '')
+    public function send($msg, $type = '')
     {
         // Set a short timeout to prevent long hangs
         stream_set_timeout($this->handle, 2);
@@ -76,7 +83,7 @@ class Socket
         // Check what type is required
         if ($type == 'array') {
             // If array loop and create array
-            $response = array();
+            $response = [];
             $line_num = 0;
             while (!feof($this->handle)) {
                 if (($response[$line_num] = fgets($this->handle, 4096)) === false) {
@@ -102,14 +109,15 @@ class Socket
     }
 
     /**
-     * Closes the connection
-     * @return boolean
+     * Closes the connection.
+     *
+     * @return bool
      */
-    function close()
+    public function close()
     {
         // Close connection
         fclose($this->handle);
+
         return true;
     }
-
 }

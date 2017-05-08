@@ -5,13 +5,12 @@ namespace Tests\Api;
 use LastFmApi\Api\AuthApi;
 
 /**
- * Base class for api tests
+ * Base class for api tests.
  *
  * @author Marcos Peña
  */
 abstract class BaseAuthenticatedApiTest extends BaseApiTest
 {
-
     protected $authentication;
     private $isApiInitiated = false;
 
@@ -19,15 +18,15 @@ abstract class BaseAuthenticatedApiTest extends BaseApiTest
     {
         $this->setUp();
         if (empty($this->apiKey)) {
-            $this->fail("You must provide a valid apiKey!");
+            $this->fail('You must provide a valid apiKey!');
         }
-        $this->authentication = new AuthApi('setsession', array(
-            'apiKey' => $this->apiKey,
-            'apiSecret' => $this->apiSecret,
+        $this->authentication = new AuthApi('setsession', [
+            'apiKey'     => $this->apiKey,
+            'apiSecret'  => $this->apiSecret,
             'sessionKey' => $this->sessionKey,
-            'username' => $this->username,
-            'subscriber' => 0
-                )
+            'username'   => $this->username,
+            'subscriber' => 0,
+                ]
         );
         $this->isApiInitiated = true;
     }
@@ -36,5 +35,4 @@ abstract class BaseAuthenticatedApiTest extends BaseApiTest
     {
         return $this->isApiInitiated;
     }
-
 }

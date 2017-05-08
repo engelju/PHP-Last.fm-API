@@ -5,18 +5,17 @@ namespace Tests\Api;
 use LastFmApi\Api\LibraryApi;
 
 /**
- * Tests library api calls
+ * Tests library api calls.
  *
  * @author Marcos Peña
  */
 class LibraryTest extends BaseNotAuthenticatedApiTest
 {
-
     private $libraryApi;
 
     const USERNAME_NAME = 'devilcius';
 
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         if (!$this->isApiInitiated()) {
             $this->initiateApi();
@@ -27,11 +26,10 @@ class LibraryTest extends BaseNotAuthenticatedApiTest
 
     public function testArtists()
     {
-        $result = $this->libraryApi->getArtists(array(
-            'user' => self::USERNAME_NAME,
-            'limit' => 1)
+        $result = $this->libraryApi->getArtists([
+            'user'  => self::USERNAME_NAME,
+            'limit' => 1, ]
         );
         $this->assertNotEmpty($result);
     }
-
 }

@@ -6,19 +6,18 @@ use LastFmApi\Api\AlbumApi;
 use LastFmApi\Exception\ApiFailedException;
 
 /**
- * Tests album api calls
+ * Tests album api calls.
  *
  * @author Marcos Peña
  */
 class AlbumTest extends BaseNotAuthenticatedApiTest
 {
-
     private $albumApi;
 
     const ALBUM_TITLE = 'Milo Goes to College';
     const ALBUM_ARTIST = 'Descendents';
 
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         if (!$this->isApiInitiated()) {
             $this->initiateApi();
@@ -29,18 +28,18 @@ class AlbumTest extends BaseNotAuthenticatedApiTest
 
     public function testGetExistingInfo()
     {
-        $albumInfo = $this->albumApi->getInfo(array(
-            'album' => self::ALBUM_TITLE,
-            'artist' => self::ALBUM_ARTIST));
+        $albumInfo = $this->albumApi->getInfo([
+            'album'  => self::ALBUM_TITLE,
+            'artist' => self::ALBUM_ARTIST, ]);
         // Assert
         $this->assertArrayHasKey('name', $albumInfo);
     }
 
     public function testTracksInInfo()
     {
-        $albumInfo = $this->albumApi->getInfo(array(
-            'album' => self::ALBUM_TITLE,
-            'artist' => self::ALBUM_ARTIST));
+        $albumInfo = $this->albumApi->getInfo([
+            'album'  => self::ALBUM_TITLE,
+            'artist' => self::ALBUM_ARTIST, ]);
         // Assert
         $this->assertArrayHasKey('tracks', $albumInfo);
     }
@@ -48,22 +47,21 @@ class AlbumTest extends BaseNotAuthenticatedApiTest
     public function testGetNonExistingInfo()
     {
         try {
-            $this->albumApi->getInfo(array(
-                'album' => 'afadsffadfadf',
-                'artist' => 'daqfadfaldfa'));
-            $this->fail("Expected Album not found exception not thrown");
+            $this->albumApi->getInfo([
+                'album'  => 'afadsffadfadf',
+                'artist' => 'daqfadfaldfa', ]);
+            $this->fail('Expected Album not found exception not thrown');
         } catch (ApiFailedException $error) {
             $this->assertEquals(6, $error->getCode());
-            $this->assertEquals("Album not found", $error->getMessage());
+            $this->assertEquals('Album not found', $error->getMessage());
         }
     }
 
     public function testSearch()
     {
-        $searchResults = $this->albumApi->search(array(
-            'album' => self::ALBUM_TITLE)
+        $searchResults = $this->albumApi->search([
+            'album' => self::ALBUM_TITLE, ]
         );
         $this->assertArrayHasKey('results', $searchResults);
     }
-
 }

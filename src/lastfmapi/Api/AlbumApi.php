@@ -3,26 +3,25 @@
 namespace LastFmApi\Api;
 
 use LastFmApi\Exception\InvalidArgumentException;
-use LastFmApi\Exception\NotAuthenticatedException;
 use LastFmApi\Exception\NoResultsException;
-
+use LastFmApi\Exception\NotAuthenticatedException;
 use SimpleXMLElement;
 
 /**
- * File that stores api calls for album api calls
- * @package apicalls
+ * File that stores api calls for album api calls.
  */
 
 /**
- * Allows access to the api requests relating to albums
+ * Allows access to the api requests relating to albums.
  */
 class AlbumApi extends BaseApi
 {
-
     /**
-     * Tag an album using a list of user supplied tags. (Requires full auth)
+     * Tag an album using a list of user supplied tags. (Requires full auth).
+     *
      * @param array $methodVars An array with the following required values: <i>album</i>, <i>artist</i>, <i>tags</i>
-     * @return boolean
+     *
+     * @return bool
      */
     public function addTags($methodVars)
     {
@@ -34,7 +33,7 @@ class AlbumApi extends BaseApi
                 if (is_array($methodVars['tags'])) {
                     $tags = '';
                     foreach ($methodVars['tags'] as $tag) {
-                        $tags .= $tag . ',';
+                        $tags .= $tag.',';
                     }
                     $tags = substr($tags, 0, -1);
                 } else {
@@ -43,11 +42,11 @@ class AlbumApi extends BaseApi
                 $methodVars['tags'] = $tags;
 
                 // Set the call variables
-                $vars = array(
-                    'method' => 'album.addtags',
+                $vars = [
+                    'method'  => 'album.addtags',
                     'api_key' => $this->getAuth()->apiKey,
-                    'sk' => $this->getAuth()->sessionKey
-                );
+                    'sk'      => $this->getAuth()->sessionKey,
+                ];
                 $vars = array_merge($vars, $methodVars);
 
                 // Generate a call signiture
@@ -62,7 +61,7 @@ class AlbumApi extends BaseApi
                     // If there is return false
                     return false;
                 }
-            } else {                
+            } else {
                 throw new InvalidArgumentException('You must include album, artist and tags variables in the call for this method');
             }
         } else {
@@ -71,20 +70,22 @@ class AlbumApi extends BaseApi
     }
 
     /**
-     * Get the metadata for an album on Last.fm using the album name or a musicbrainz id
+     * Get the metadata for an album on Last.fm using the album name or a musicbrainz id.
+     *
      * @param array $methodVars An array with the following required values: <i>album</i> and optional values: <i>artist</i>, <i>mbid</i>
+     *
      * @return array
      */
     public function getInfo($methodVars)
     {
         // Set the call variables
-        $vars = array(
-            'method' => 'album.getinfo',
-            'api_key' => $this->getAuth()->apiKey
-        );
+        $vars = [
+            'method'  => 'album.getinfo',
+            'api_key' => $this->getAuth()->apiKey,
+        ];
         $vars = array_merge($vars, $methodVars);
 
-        $info = array();
+        $info = [];
         $i = 0;
         if ($call = $this->apiGetCall($vars)) {
             $info['name'] = (string) $call->album->name;
@@ -110,16 +111,16 @@ class AlbumApi extends BaseApi
                 $info['tracks'][$i]['duration'] = (string) $track->duration;
                 $info['tracks'][$i]['streamable'] = (string) $track->streamable;
                 $info['tracks'][$i]['rank'] = (string) $track['rank'];
-                $info['tracks'][$i]['artist'] = array();
+                $info['tracks'][$i]['artist'] = [];
                 $info['tracks'][$i]['artist']['name'] = $track->artist->name;
                 $info['tracks'][$i]['artist']['mbid'] = $track->artist->mbid;
                 $info['tracks'][$i]['artist']['url'] = $track->artist->url;
                 $i++;
             }
-            $info['wiki'] = array(
+            $info['wiki'] = [
                 'summary' => (string) $call->album->wiki->summary,
-                'content' => (string) $call->album->wiki->content
-            );
+                'content' => (string) $call->album->wiki->content,
+            ];
 
             return $info;
         } else {
@@ -128,8 +129,10 @@ class AlbumApi extends BaseApi
     }
 
     /**
-     * Get the tags applied by an individual user to an album on Last.fm
+     * Get the tags applied by an individual user to an album on Last.fm.
+     *
      * @param array $methodVars An array with the following required values: <i>album</i>, <i>artist</i>
+     *
      * @return array
      */
     public function getTags($methodVars)
@@ -139,18 +142,18 @@ class AlbumApi extends BaseApi
             // Check for required variables
             if (!empty($methodVars['album']) && !empty($methodVars['artist'])) {
                 // Set the variables
-                $vars = array(
-                    'method' => 'album.gettags',
+                $vars = [
+                    'method'  => 'album.gettags',
                     'api_key' => $this->getAuth()->apiKey,
-                    'sk' => $this->getAuth()->sessionKey
-                );
+                    'sk'      => $this->getAuth()->sessionKey,
+                ];
                 $vars = array_merge($vars, $methodVars);
 
                 // Generate a call signiture
                 $sig = $this->apiSig($this->getAuth()->apiSecret, $vars);
                 $vars['api_sig'] = $sig;
 
-                $tags = array();
+                $tags = [];
                 // Make the call
                 if ($call = $this->apiGetCall($vars)) {
                     if (count($call->tags->tag) > 0) {
@@ -177,9 +180,11 @@ class AlbumApi extends BaseApi
     }
 
     /**
-     * Remove a user's tag from an album. (Requires full auth)
+     * Remove a user's tag from an album. (Requires full auth).
+     *
      * @param array $methodVars An array with the following required values: <i>album</i>, <i>artist</i>, <i>tag</i>
-     * @return boolean
+     *
+     * @return bool
      */
     public function removeTag($methodVars)
     {
@@ -188,11 +193,11 @@ class AlbumApi extends BaseApi
             // Check for required variables
             if (!empty($methodVars['album']) && !empty($methodVars['artist']) && !empty($methodVars['tag'])) {
                 // Set the variables
-                $vars = array(
-                    'method' => 'album.removetag',
+                $vars = [
+                    'method'  => 'album.removetag',
                     'api_key' => $this->getAuth()->apiKey,
-                    'sk' => $this->getAuth()->sessionKey
-                );
+                    'sk'      => $this->getAuth()->sessionKey,
+                ];
                 $vars = array_merge($vars, $methodVars);
 
                 // Generate a call signature
@@ -214,21 +219,23 @@ class AlbumApi extends BaseApi
     }
 
     /**
-     * Search for an album by name. Returns album matches sorted by relevance
+     * Search for an album by name. Returns album matches sorted by relevance.
+     *
      * @param array $methodVars An array with the following required values: <i>album</i>
+     *
      * @return array
      */
     public function search($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['album'])) {
-            $vars = array(
-                'method' => 'album.search',
-                'api_key' => $this->getAuth()->apiKey
-            );
+            $vars = [
+                'method'  => 'album.search',
+                'api_key' => $this->getAuth()->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
-            $searchresults = array();
+            $searchresults = [];
             if ($call = $this->apiGetCall($vars)) {
                 $callNamespaces = $call->getDocNamespaces(true);
                 // fix missing namespace (sic)
@@ -265,5 +272,4 @@ class AlbumApi extends BaseApi
             throw new InvalidArgumentException('You must include album variable in the call for this method');
         }
     }
-
 }

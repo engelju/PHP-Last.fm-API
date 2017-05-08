@@ -3,62 +3,67 @@
 namespace LastFmApi\Lib;
 
 /**
- * Stores the mysql database methods
- * @package base
+ * Stores the mysql database methods.
  */
 
 /**
- * Allows access to the mysql database using a standard database class
- * @package base
+ * Allows access to the mysql database using a standard database class.
  */
 class MySql
 {
-
     /**
-     * Stores the host name
+     * Stores the host name.
+     *
      * @var string
      */
     private $host;
 
     /**
-     * Stores the username
+     * Stores the username.
+     *
      * @var string
      */
     private $dbUser;
 
     /**
-     * Stores the password
+     * Stores the password.
+     *
      * @var string
      */
     private $dbPass;
 
     /**
-     * Stores the database name
+     * Stores the database name.
+     *
      * @var string
      */
     private $dbName;
 
     /**
-     * Stores the connection status
-     * @var boolean
+     * Stores the connection status.
+     *
+     * @var bool
      */
     public $dbConn;
 
     /**
-     * Stores the error details
+     * Stores the error details.
+     *
      * @var array
      */
     public $error;
 
     /**
-     * Constructor
-     * @param string $host Database host address
+     * Constructor.
+     *
+     * @param string $host   Database host address
      * @param string $dbUser Database username
      * @param string $dbPass Database password
      * @param string $dbName Database name
+     *
      * @return void
      */
-    function __construct($host, $dbUser, $dbPass, $dbName)
+    public function __construct($host, $dbUser, $dbPass, $dbName)
     {
         $this->host = $host;
         $this->dbUser = $dbUser;
@@ -69,20 +74,22 @@ class MySql
     }
 
     /**
-     * Internal command to connect to the database
+     * Internal command to connect to the database.
+     *
      * @return void
      */
     private function connectToDb()
     {
         if (!$this->dbConn = @mysql_connect($this->host, $this->dbUser, $this->dbPass)) {
             $this->handleError();
-        } else if (!@mysql_select_db($this->dbName, $this->dbConn)) {
+        } elseif (!@mysql_select_db($this->dbName, $this->dbConn)) {
             $this->handleError();
         }
     }
 
     /**
-     * Internal command to handle errors and populate the error variable
+     * Internal command to handle errors and populate the error variable.
+     *
      * @return void
      */
     private function handleError()
@@ -91,9 +98,12 @@ class MySql
     }
 
     /**
-     * Command which runs queries. Returns a class on success and flase on error
+     * Command which runs queries. Returns a class on success and flase on error.
+     *
      * @param string $sql The SQL query to run
+     *
      * @return class
+     *
      * @uses lastfmApiDatabase_result
      */
     public function query($sql)
@@ -105,5 +115,4 @@ class MySql
             return new MySqlResult($this, $queryResource);
         }
     }
-
 }
