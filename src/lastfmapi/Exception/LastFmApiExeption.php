@@ -1,8 +1,9 @@
 <?php
 
 namespace LastFmApi\Exception;
+
 /**
- * MissingArgumentException
+ * MissingArgumentException.
  *
  * @author Marcos Peña
  */
@@ -15,6 +16,6 @@ abstract class LastFmApiExeption extends \Exception
 
     public function __toString()
     {
-        return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
+        return __CLASS__.": [{$this->code}]: {$this->message}\n";
     }
 }

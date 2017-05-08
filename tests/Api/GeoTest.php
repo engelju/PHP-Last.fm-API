@@ -5,18 +5,17 @@ namespace Tests\Api;
 use LastFmApi\Api\GeoApi;
 
 /**
- * Tests geo api calls
+ * Tests geo api calls.
  *
  * @author Marcos Peña
  */
 class GeoTest extends BaseNotAuthenticatedApiTest
 {
-
     private $geoApi;
 
     const COUNTRY_NAME = 'Spain';
 
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         if (!$this->isApiInitiated()) {
             $this->initiateApi();
@@ -27,20 +26,19 @@ class GeoTest extends BaseNotAuthenticatedApiTest
 
     public function testTopArtist()
     {
-        $result = $this->geoApi->getTopArtists(array(
+        $result = $this->geoApi->getTopArtists([
             'country' => self::COUNTRY_NAME,
-            'limit' => 1)
+            'limit'   => 1, ]
         );
         $this->assertNotEmpty($result);
     }
 
     public function testTopTracks()
     {
-        $result = $this->geoApi->getTopTracks(array(
+        $result = $this->geoApi->getTopTracks([
             'country' => self::COUNTRY_NAME,
-            'limit' => 1)
+            'limit'   => 1, ]
         );
         $this->assertNotEmpty($result);
     }
-
 }

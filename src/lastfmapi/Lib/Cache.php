@@ -3,63 +3,71 @@
 namespace LastFmApi\Lib;
 
 /**
- * Stores the caching methods
+ * Stores the caching methods.
  */
 
 /**
- * Allows access to the caching methods to cache data when api calls are made
+ * Allows access to the caching methods to cache data when api calls are made.
  */
 class Cache
 {
-
     /**
-     * Stores the batabase class
+     * Stores the batabase class.
+     *
      * @var class
      */
     private $db;
 
     /**
-     * Stores the batabase type
+     * Stores the batabase type.
+     *
      * @var string
      */
     private $type;
 
     /**
-     * Stores the error details
+     * Stores the error details.
+     *
      * @var array
      */
     public $error;
 
     /**
-     * Stores the path to the sqlite database
+     * Stores the path to the sqlite database.
+     *
      * @var string
      */
     private $path;
 
     /**
-     * Stores the amount of time to cahce for
-     * @var integer
+     * Stores the amount of time to cahce for.
+     *
+     * @var int
      */
     private $cache_length;
 
     /**
-     * Stores the config array
+     * Stores the config array.
+     *
      * @var array
      */
     private $config;
 
     /**
-     * States if caching is enabled or not
-     * @var boolean
+     * States if caching is enabled or not.
+     *
+     * @var bool
      */
     private $enabled;
 
     /**
-     * Run when the class is created
+     * Run when the class is created.
+     *
      * @param array $config The config array
+     *
      * @uses lastfmApiDatabase
      */
-    function __construct($config)
+    public function __construct($config)
     {
         $this->config = $config;
 
@@ -73,17 +81,19 @@ class Cache
 
         if ($this->enabled == true) {
             if ($this->type == 'sqlite') {
-                $this->db = new Sqlite($this->config['path'] . 'phplastfmapi');
+                $this->db = new Sqlite($this->config['path'].'phplastfmapi');
             } else {
                 if (isset($this->config['database']['host']) && isset($this->config['database']['username']) && isset($this->config['database']['password']) && isset($this->config['database']['name'])) {
                     $this->db = new MySql($this->config['database']['host'], $this->config['database']['username'], $this->config['database']['password'], $this->config['database']['name']);
                 } else {
                     $this->error = 'Not all mysql database variables were supplied';
+
                     return false;
                 }
             }
             if (!empty($this->db->error)) {
                 $this->error = $this->db->error;
+
                 return false;
             } else {
                 $this->check_table_exists();
@@ -93,8 +103,8 @@ class Cache
     }
 
     /**
-     * Internal method to chack if caching is enabled
-     * @access private
+     * Internal method to chack if caching is enabled.
+     *
      * @return void
      */
     private function check_if_enabled()
@@ -107,8 +117,8 @@ class Cache
     }
 
     /**
-     * Internal method to check if the table exists
-     * @access private
+     * Internal method to check if the table exists.
+     *
      * @return void
      */
     private function check_table_exists()
@@ -134,8 +144,8 @@ class Cache
     }
 
     /**
-     * Internal method to create the table if it doesn't exist
-     * @access private
+     * Internal method to create the table if it doesn't exist.
+     *
      * @return void
      */
     private function create_table()
@@ -145,7 +155,7 @@ class Cache
         } else {
             $auto_increase = ' AUTO_INCREMENT';
         }
-        $query = "CREATE TABLE cache (cache_id INTEGER PRIMARY KEY" . $auto_increase . ", unique_vars TEXT, expires INT, body TEXT)";
+        $query = 'CREATE TABLE cache (cache_id INTEGER PRIMARY KEY'.$auto_increase.', unique_vars TEXT, expires INT, body TEXT)';
         if ($this->db->query($query)) {
             // Ok
         } else {
@@ -155,20 +165,22 @@ class Cache
     }
 
     /**
-     * Searches the database for the cahce date. Returns an array if it exists or false if it doesn't 
-     * @access public
+     * Searches the database for the cahce date. Returns an array if it exists or false if it doesn't.
+     *
      * @param array $unique_vars Array of variables that are unique to this piece of cached data
+     *
      * @return string
      */
     public function get($unique_vars)
     {
         if ($this->enabled == true) {
-            $query = "SELECT expires, body FROM cache WHERE unique_vars='" . htmlentities(serialize($unique_vars), ENT_COMPAT, 'UTF-8') . "' LIMIT 1";
+            $query = "SELECT expires, body FROM cache WHERE unique_vars='".htmlentities(serialize($unique_vars), ENT_COMPAT, 'UTF-8')."' LIMIT 1";
             if ($result = $this->db->query($query)) {
                 if ($result->size() > 0) {
                     $row = $result->fetch();
                     if ($row['expires'] < time()) {
                         $this->del($unique_vars);
+
                         return false;
                     } else {
                         //print_r(unserialize(html_entity_decode($row['body'], ENT_COMPAT, 'UTF-8')));
@@ -187,17 +199,18 @@ class Cache
     }
 
     /**
-     * Adds new cache data to the database
-     * @access public
-     * @param array $unique_vars Array of variables that are unique to this piece of cached data
-     * @param string $body The contents of the cache to put into the database
-     * @return boolean
+     * Adds new cache data to the database.
+     *
+     * @param array  $unique_vars Array of variables that are unique to this piece of cached data
+     * @param string $body        The contents of the cache to put into the database
+     *
+     * @return bool
      */
     public function set($unique_vars, $body)
     {
         if ($this->enabled == true) {
             $expire = time() + $this->config['cache_length'];
-            $query = "INSERT INTO cache (unique_vars, expires, body) VALUES ('" . htmlentities(serialize($unique_vars), ENT_COMPAT, 'UTF-8') . "', '" . $expire . "', \"" . htmlentities(serialize($body), ENT_COMPAT, 'UTF-8') . "\")";
+            $query = "INSERT INTO cache (unique_vars, expires, body) VALUES ('".htmlentities(serialize($unique_vars), ENT_COMPAT, 'UTF-8')."', '".$expire."', \"".htmlentities(serialize($body), ENT_COMPAT, 'UTF-8').'")';
             if ($this->db->query($query)) {
                 return true;
             } else {
@@ -210,14 +223,15 @@ class Cache
     }
 
     /**
-     * Internal method to delete unneeded cache data
-     * @access private
+     * Internal method to delete unneeded cache data.
+     *
      * @param array $unique_vars Array of variables that are unique to this piece of cached data
-     * @return boolean
+     *
+     * @return bool
      */
     private function del($unique_vars)
     {
-        $query = "DELETE FROM cache WHERE unique_vars='" . htmlentities(serialize($unique_vars), ENT_COMPAT, 'UTF-8') . "'";
+        $query = "DELETE FROM cache WHERE unique_vars='".htmlentities(serialize($unique_vars), ENT_COMPAT, 'UTF-8')."'";
         if ($this->db->query($query)) {
             return true;
         } else {
@@ -227,13 +241,13 @@ class Cache
     }
 
     /**
-     * Internal method to show all cached data (used for debugging)
-     * @access private
-     * @return boolean
+     * Internal method to show all cached data (used for debugging).
+     *
+     * @return bool
      */
     private function show_all()
     {
-        $query = "SELECT expires, body FROM cache";
+        $query = 'SELECT expires, body FROM cache';
         if ($result = $this->db->query($query)) {
             if ($result->size() > 0) {
                 $results = $result->fetchAll();
@@ -248,5 +262,4 @@ class Cache
             return false;
         }
     }
-
 }

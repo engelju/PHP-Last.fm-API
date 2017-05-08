@@ -6,17 +6,17 @@ use LastFmApi\Exception\ApiFailedException;
 use LastFmApi\Exception\CacheException;
 use LastFmApi\Exception\ConnectionException;
 use LastFmApi\Exception\InvalidArgumentException;
-use LastFmApi\Lib\Socket;
-use LastFmApi\Lib\Cache;
 use LastFmApi\Lib\ApiUtils;
-use \SimpleXMLElement;
+use LastFmApi\Lib\Cache;
+use LastFmApi\Lib\Socket;
+use SimpleXMLElement;
 
 /**
- * File that contains all base methods used by all api calls
+ * File that contains all base methods used by all api calls.
  */
 
 /**
- * Stores the methods used by all api calls
+ * Stores the methods used by all api calls.
  */
 class BaseApi
 {
@@ -73,24 +73,26 @@ class BaseApi
     protected $config;
 
     /**
-     * Stores the auth variables used in all api calls
+     * Stores the auth variables used in all api calls.
+     *
      * @var array
      */
     protected $auth;
 
     /**
-     * States if the user has full authentication to use api requests that modify data
-     * @var boolean
+     * States if the user has full authentication to use api requests that modify data.
+     *
+     * @var bool
      */
     protected $fullAuth;
 
-    public function __construct($auth, $config = array())
+    public function __construct($auth, $config = [])
     {
         $this->config = $config;
         if (empty($this->config)) {
-            $this->config = array(
-                'enabled' => false
-            );
+            $this->config = [
+                'enabled' => false,
+            ];
         }
 
         if (is_object($auth)) {
@@ -108,8 +110,7 @@ class BaseApi
     }
 
     /**
-     * 
-     * @return boolean
+     * @return bool
      */
     public function getFullAuth()
     {
@@ -117,7 +118,6 @@ class BaseApi
     }
 
     /**
-     * 
      * @return array
      */
     public function getConfig()
@@ -126,7 +126,6 @@ class BaseApi
     }
 
     /**
-     * 
      * @return array
      */
     public function getAuth()
@@ -149,6 +148,7 @@ class BaseApi
         $this->socket = new Socket($this->host, $this->port);
         if (!$this->socket->error_number && !$this->socket->error_string) {
             $this->connected = 1;
+
             return true;
         } else {
             throw new ConnectionException($this->socket->error_string);
@@ -171,19 +171,16 @@ class BaseApi
             } elseif (substr($line, 0, 1) == '<') {
                 $record = 1;
             } elseif (preg_match('/^HTTP\/1.[0-9]{1} ([5-9]{1}[0-9]{2}.*)/', $line, $matches)) {
-
-                throw new ConnectionException($this->host . ': Service not available (' . trim($matches[1]) . ')');
+                throw new ConnectionException($this->host.': Service not available ('.trim($matches[1]).')');
             }
         }
         try {
             libxml_use_internal_errors(true);
             $xml = new SimpleXMLElement($xmlstr);
         } catch (\Exception $error) {
-
             throw new ConnectionException($error->getMessage());
         }
-        if((string)$xml->attributes()->status === 'failed' )
-        {
+        if ((string) $xml->attributes()->status === 'failed') {
             throw new ApiFailedException($xml->error, intval($xml->error['code']));
         }
         if (!isset($error)) {
@@ -213,13 +210,13 @@ class BaseApi
                     // Cache doesnt exist
                     $url = '/2.0/?';
                     foreach ($vars as $name => $value) {
-                        $url .= trim(urlencode($name)) . '=' . trim(urlencode($value)) . '&';
+                        $url .= trim(urlencode($name)).'='.trim(urlencode($value)).'&';
                     }
                     $url = substr($url, 0, -1);
                     $url = str_replace(' ', '%20', $url);
 
-                    $out = "GET " . $url . " HTTP/1.0\r\n";
-                    $out .= "Host: " . $this->host . "\r\n";
+                    $out = 'GET '.$url." HTTP/1.0\r\n";
+                    $out .= 'Host: '.$this->host."\r\n";
                     $out .= "\r\n";
                     $this->response = $this->socket->send($out, 'array');
                     $this->cache->set($vars, $this->response);
@@ -246,16 +243,16 @@ class BaseApi
 
             $data = '';
             foreach ($vars as $name => $value) {
-                $data .= trim($name) . '=' . trim(urlencode($value)) . '&';
+                $data .= trim($name).'='.trim(urlencode($value)).'&';
             }
             $data = substr($data, 0, -1);
 
-            $out = "POST " . $url . " HTTP/1.1\r\n";
-            $out .= "Host: " . $this->host . "\r\n";
-            $out .= "Content-Length: " . strlen($data) . "\r\n";
+            $out = 'POST '.$url." HTTP/1.1\r\n";
+            $out .= 'Host: '.$this->host."\r\n";
+            $out .= 'Content-Length: '.strlen($data)."\r\n";
             $out .= "Content-Type: application/x-www-form-urlencoded\r\n";
             $out .= "\r\n";
-            $out .= $data . "\r\n";
+            $out .= $data."\r\n";
             $this->response = $this->socket->send($out, 'array');
 
             return $this->processResponse();

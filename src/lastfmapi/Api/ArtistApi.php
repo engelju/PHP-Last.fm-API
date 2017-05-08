@@ -8,15 +8,16 @@ use LastFmApi\Exception\NotAuthenticatedException;
 use SimpleXMLElement;
 
 /**
- * Allows access to the api requests relating to artists
+ * Allows access to the api requests relating to artists.
  */
 class ArtistApi extends BaseApi
 {
-
     /**
-     * Tag an artist using a list of user supplied tags. (Requires full auth)
+     * Tag an artist using a list of user supplied tags. (Requires full auth).
+     *
      * @param array $methodVars An array with the following required values: <i>artist</i>, <i>tags</i>
-     * @return boolean
+     *
+     * @return bool
      */
     public function addTags($methodVars)
     {
@@ -28,7 +29,7 @@ class ArtistApi extends BaseApi
                 if (is_array($methodVars['tags'])) {
                     $tags = '';
                     foreach ($methodVars['tags'] as $tag) {
-                        $tags .= $tag . ',';
+                        $tags .= $tag.',';
                     }
                     $tags = substr($tags, 0, -1);
                 } else {
@@ -37,11 +38,11 @@ class ArtistApi extends BaseApi
                 $methodVars['tags'] = $tags;
 
                 // Set the call variables
-                $vars = array(
-                    'method' => 'artist.addtags',
+                $vars = [
+                    'method'  => 'artist.addtags',
                     'api_key' => $this->auth->apiKey,
-                    'sk' => $this->auth->sessionKey
-                );
+                    'sk'      => $this->auth->sessionKey,
+                ];
                 $vars = array_merge($vars, $methodVars);
                 $sig = $this->apiSig($this->auth->apiSecret, $vars);
                 $vars['api_sig'] = $sig;
@@ -61,18 +62,21 @@ class ArtistApi extends BaseApi
 
     /**
      * Get a list of upcoming events for this artist.
+     *
      * @deprecated as of march 15 2016, 'artist.getevents' service is not available
+     *
      * @param array $methodVars An array with the following required values: <i>artist</i>
+     *
      * @return array
      */
     public function getEvents($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['artist']) || !empty($methodVars['mbid'])) {
-            $vars = array(
-                'method' => 'artist.getevents',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'artist.getevents',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
             if ($call = $this->apiGetCall($vars)) {
                 if ($call->events['total'] != 0) {
@@ -123,15 +127,17 @@ class ArtistApi extends BaseApi
 
     /**
      * Get all images for an artist on Last.fm.
+     *
      * @param array $methodVars An array with the following values: <i>artist</i> or <i>mbid</i>
+     *
      * @return array
      */
     public function getImages($methodVars)
     {
-        $vars = array(
-            'method' => 'artist.getinfo',
-            'api_key' => $this->auth->apiKey
-        );
+        $vars = [
+            'method'  => 'artist.getinfo',
+            'api_key' => $this->auth->apiKey,
+        ];
         $vars = array_merge($vars, $methodVars);
 
         if ($call = $this->apiGetCall($vars)) {
@@ -149,15 +155,17 @@ class ArtistApi extends BaseApi
 
     /**
      * Get the metadata for an artist on Last.fm. Includes biography.
+     *
      * @param array $methodVars An array with the following values: <i>artist</i> or <i>mbid</i>
+     *
      * @return array
      */
     public function getInfo($methodVars)
     {
-        $vars = array(
-            'method' => 'artist.getinfo',
-            'api_key' => $this->auth->apiKey
-        );
+        $vars = [
+            'method'  => 'artist.getinfo',
+            'api_key' => $this->auth->apiKey,
+        ];
         $vars = array_merge($vars, $methodVars);
 
         if ($call = $this->apiGetCall($vars)) {
@@ -203,17 +211,20 @@ class ArtistApi extends BaseApi
 
     /**
      * Get shouts for this artist.
+     *
      * @deprecated as of march 15 2016, 'artist.getshouts' service is not available
+     *
      * @param array $methodVars An array with the following required values: <i>artist</i>
+     *
      * @return array
      */
     public function getShouts($methodVars)
     {
         if (!empty($methodVars['artist']) || !empty($methodVars['mbid'])) {
-            $vars = array(
-                'method' => 'artist.getshouts',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'artist.getshouts',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -237,18 +248,20 @@ class ArtistApi extends BaseApi
     }
 
     /**
-     * Get all the artists similar to this artist
+     * Get all the artists similar to this artist.
+     *
      * @param array $methodVars An array with the following required value: <i>artist</i> and optional value: <i>limit</i>
+     *
      * @return array
      */
     public function getSimilar($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['artist']) || !empty($methodVars['mbid'])) {
-            $vars = array(
-                'method' => 'artist.getsimilar',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'artist.getsimilar',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -273,8 +286,10 @@ class ArtistApi extends BaseApi
     }
 
     /**
-     * Get the tags applied by an individual user to an artist on Last.fm. (Requires full auth)
+     * Get the tags applied by an individual user to an artist on Last.fm. (Requires full auth).
+     *
      * @param array $methodVars An array with the following required values: <i>artist</i>
+     *
      * @return array
      */
     public function getTags($methodVars)
@@ -283,11 +298,11 @@ class ArtistApi extends BaseApi
         if ($this->fullAuth == true) {
             // Check for required variables
             if (!empty($methodVars['artist'])) {
-                $vars = array(
-                    'method' => 'artist.gettags',
+                $vars = [
+                    'method'  => 'artist.gettags',
                     'api_key' => $this->auth->apiKey,
-                    'sk' => $this->auth->sessionKey
-                );
+                    'sk'      => $this->auth->sessionKey,
+                ];
                 $vars = array_merge($vars, $methodVars);
                 $sig = $this->apiSig($this->auth->apiSecret, $vars);
                 $vars['api_sig'] = $sig;
@@ -317,18 +332,20 @@ class ArtistApi extends BaseApi
     }
 
     /**
-     * Get the top albums for an artist on Last.fm, ordered by popularity
+     * Get the top albums for an artist on Last.fm, ordered by popularity.
+     *
      * @param array $methodVars An array with the following required values: <i>artist</i> and optional value: <i>limit</i>, <i></i>
+     *
      * @return array
      */
     public function getTopAlbums($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['artist']) || !empty($methodVars['mbid'])) {
-            $vars = array(
-                'method' => 'artist.gettopalbums',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'artist.gettopalbums',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -359,19 +376,22 @@ class ArtistApi extends BaseApi
     }
 
     /**
-     * Get the top fans for an artist on Last.fm, based on listening data
+     * Get the top fans for an artist on Last.fm, based on listening data.
+     *
      * @deprecated as of march 15 2016, 'artist.gettopfans' service is not available
+     *
      * @param array $methodVars An array with the following required values: <i>artist</i>
+     *
      * @return array
      */
     public function getTopFans($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['artist']) || !empty($methodVars['mbid'])) {
-            $vars = array(
-                'method' => 'artist.gettopfans',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'artist.gettopfans',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -400,18 +420,20 @@ class ArtistApi extends BaseApi
     }
 
     /**
-     * Get the top tags for an artist on Last.fm, ordered by popularity
+     * Get the top tags for an artist on Last.fm, ordered by popularity.
+     *
      * @param array $methodVars An array with the following required values: <i>artist</i>
+     *
      * @return array
      */
     public function getTopTags($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['artist']) || !empty($methodVars['mbid'])) {
-            $vars = array(
-                'method' => 'artist.gettoptags',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'artist.gettoptags',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -436,18 +458,20 @@ class ArtistApi extends BaseApi
     }
 
     /**
-     * Get the top tracks by an artist on Last.fm, ordered by popularity
+     * Get the top tracks by an artist on Last.fm, ordered by popularity.
+     *
      * @param array $methodVars An array with the following required values: <i>artist</i> and optional value: <i>limit</i>
+     *
      * @return array
      */
     public function getTopTracks($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['artist']) || !empty($methodVars['mbid'])) {
-            $vars = array(
-                'method' => 'artist.gettoptracks',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'artist.gettoptracks',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -478,9 +502,11 @@ class ArtistApi extends BaseApi
     }
 
     /**
-     * Remove a user's tag from an artist. (Requires full auth)
+     * Remove a user's tag from an artist. (Requires full auth).
+     *
      * @param array $methodVars An array with the following required values: <i>artist</i>, <i>tag</i>
-     * @return boolean
+     *
+     * @return bool
      */
     public function removeTag($methodVars)
     {
@@ -488,11 +514,11 @@ class ArtistApi extends BaseApi
         if ($this->fullAuth == true) {
             // Check for required variables
             if (!empty($methodVars['artist']) && !empty($methodVars['tag'])) {
-                $vars = array(
-                    'method' => 'artist.removetag',
+                $vars = [
+                    'method'  => 'artist.removetag',
                     'api_key' => $this->auth->apiKey,
-                    'sk' => $this->auth->sessionKey
-                );
+                    'sk'      => $this->auth->sessionKey,
+                ];
                 $vars = array_merge($vars, $methodVars);
                 $sig = $this->apiSig($this->auth->apiSecret, $vars);
                 $vars['api_sig'] = $sig;
@@ -511,18 +537,20 @@ class ArtistApi extends BaseApi
     }
 
     /**
-     * Search for an artist by name. Returns artist matches sorted by relevance
+     * Search for an artist by name. Returns artist matches sorted by relevance.
+     *
      * @param array $methodVars An array with the following required value: <i>artist</i> and optional values: <i>limite</i>, <i>page</i>
+     *
      * @return array
      */
     public function search($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['artist'])) {
-            $vars = array(
-                'method' => 'artist.search',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'artist.search',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -561,9 +589,11 @@ class ArtistApi extends BaseApi
     }
 
     /**
-     * Share an artist with Last.fm users or other friends. (Requires full auth)
+     * Share an artist with Last.fm users or other friends. (Requires full auth).
+     *
      * @param array $methodVars An array with the following required values: <i>artist</i>, <i>recipient</i> and optional values: <i>message</i>
-     * @return boolean
+     *
+     * @return bool
      */
     public function share($methodVars)
     {
@@ -571,11 +601,11 @@ class ArtistApi extends BaseApi
         if ($this->fullAuth == true) {
             // Check for required variables
             if (!empty($methodVars['artist']) && !empty($methodVars['recipient'])) {
-                $vars = array(
-                    'method' => 'artist.share',
+                $vars = [
+                    'method'  => 'artist.share',
                     'api_key' => $this->auth->apiKey,
-                    'sk' => $this->auth->sessionKey
-                );
+                    'sk'      => $this->auth->sessionKey,
+                ];
                 $vars = array_merge($vars, $methodVars);
                 $sig = $this->apiSig($this->auth->apiSecret, $vars);
                 $vars['api_sig'] = $sig;
@@ -594,9 +624,11 @@ class ArtistApi extends BaseApi
     }
 
     /**
-     * Shout in this artist's shoutbox
+     * Shout in this artist's shoutbox.
+     *
      * @param array $methodVars An array with the following required values: <i>artist</i>, <i>message</i>
-     * @return boolean
+     *
+     * @return bool
      */
     public function shout($methodVars)
     {
@@ -604,11 +636,11 @@ class ArtistApi extends BaseApi
         if ($this->fullAuth == true) {
             // Check for required variables
             if (!empty($methodVars['artist']) && !empty($methodVars['message'])) {
-                $vars = array(
-                    'method' => 'artist.shout',
+                $vars = [
+                    'method'  => 'artist.shout',
                     'api_key' => $this->auth->apiKey,
-                    'sk' => $this->auth->sessionKey
-                );
+                    'sk'      => $this->auth->sessionKey,
+                ];
                 $vars = array_merge($vars, $methodVars);
                 $sig = $this->apiSig($this->auth->apiSecret, $vars);
                 $vars['api_sig'] = $sig;
@@ -625,5 +657,4 @@ class ArtistApi extends BaseApi
             throw new NotAuthenticatedException('Method requires full auth. Call auth.getSession using lastfmApiAuth class');
         }
     }
-
 }

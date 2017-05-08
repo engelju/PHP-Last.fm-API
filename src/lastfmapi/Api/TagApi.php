@@ -1,30 +1,32 @@
 <?php
+
 namespace LastFmApi\Api;
 
 use LastFmApi\Exception\InvalidArgumentException;
 use LastFmApi\Exception\NoResultsException;
 
 /**
- * Allows access to the api requests relating to tags
+ * Allows access to the api requests relating to tags.
  */
 class TagApi extends BaseApi
 {
-
     /**
-     * Search for tags similar to this one. Returns tags ranked by similarity, based on listening data
+     * Search for tags similar to this one. Returns tags ranked by similarity, based on listening data.
+     *
      * @param array $methodVars An array with the following required values: <i>tag</i>
+     *
      * @return array
      */
     public function getSimilar($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['tag'])) {
-            $vars = array(
-                'method' => 'tag.getsimilar',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'tag.getsimilar',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
-            $similar = array();
+            $similar = [];
             if ($call = $this->apiGetCall($vars)) {
                 $i = 0;
                 foreach ($call->similartags->tag as $tag) {
@@ -33,6 +35,7 @@ class TagApi extends BaseApi
                     $similar[$i]['streamable'] = (string) $tag->streamable;
                     $i++;
                 }
+
                 return $similar;
             } else {
                 return false;
@@ -43,18 +46,20 @@ class TagApi extends BaseApi
     }
 
     /**
-     * Get the top albums tagged by this tag, ordered by tag count
+     * Get the top albums tagged by this tag, ordered by tag count.
+     *
      * @param array $methodVars An array with the following required values: <i>tag</i>
+     *
      * @return array
      */
     public function getTopAlbums($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['tag'])) {
-            $vars = array(
-                'method' => 'tag.gettopalbums',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'tag.gettopalbums',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -71,6 +76,7 @@ class TagApi extends BaseApi
                     $topAlbums[$i]['image']['large'] = (string) $album->image[2];
                     $i++;
                 }
+
                 return $topAlbums;
             } else {
                 return false;
@@ -81,18 +87,20 @@ class TagApi extends BaseApi
     }
 
     /**
-     * Get the top artists tagged by this tag, ordered by tag count
+     * Get the top artists tagged by this tag, ordered by tag count.
+     *
      * @param array $methodVars An array with the following required values: <i>tag</i>
+     *
      * @return array
      */
     public function getTopArtists($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['tag'])) {
-            $vars = array(
-                'method' => 'tag.gettopartists',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'tag.gettopartists',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -108,6 +116,7 @@ class TagApi extends BaseApi
                     $topArtists[$i]['image']['large'] = (string) $artist->image[2];
                     $i++;
                 }
+
                 return $topArtists;
             } else {
                 return false;
@@ -118,15 +127,16 @@ class TagApi extends BaseApi
     }
 
     /**
-     * Fetches the top global tags on Last.fm, sorted by popularity (number of times used)
+     * Fetches the top global tags on Last.fm, sorted by popularity (number of times used).
+     *
      * @return array
      */
-    public function getTopTags($methodVars = Array())
+    public function getTopTags($methodVars = [])
     {
-        $vars = array(
-            'method' => 'tag.gettoptags',
-            'api_key' => $this->auth->apiKey
-        );
+        $vars = [
+            'method'  => 'tag.gettoptags',
+            'api_key' => $this->auth->apiKey,
+        ];
         $vars = array_merge($vars, $methodVars);
 
         if ($call = $this->apiGetCall($vars)) {
@@ -137,6 +147,7 @@ class TagApi extends BaseApi
                 $topTags[$i]['url'] = (string) $tag->url;
                 $i++;
             }
+
             return $topTags;
         } else {
             return false;
@@ -144,18 +155,20 @@ class TagApi extends BaseApi
     }
 
     /**
-     * Get the top tracks tagged by this tag, ordered by tag count
+     * Get the top tracks tagged by this tag, ordered by tag count.
+     *
      * @param array $methodVars An array with the following required values: <i>tag</i>
+     *
      * @return array
      */
     public function getTopTracks($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['tag'])) {
-            $vars = array(
-                'method' => 'tag.gettoptracks',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'tag.gettoptracks',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -174,6 +187,7 @@ class TagApi extends BaseApi
                     $topTracks[$i]['image']['large'] = (string) $track->image[2];
                     $i++;
                 }
+
                 return $topTracks;
             } else {
                 return false;
@@ -184,19 +198,22 @@ class TagApi extends BaseApi
     }
 
     /**
-     * Get an artist chart for a tag, for a given date range. If no date range is supplied, it will return the most recent artist chart for this tag
+     * Get an artist chart for a tag, for a given date range. If no date range is supplied, it will return the most recent artist chart for this tag.
+     *
      * @deprecated as of march 15 2016, 'tag.getweeklyartistchar' method is not available
+     *
      * @param array $methodVars An array with the following required values: <i>tag</i> and optional values: <i>to</i>, <i>from</i>
+     *
      * @return array
      */
     public function getWeeklyArtistChart($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['tag'])) {
-            $vars = array(
-                'method' => 'tag.getweeklyartistchart',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'tag.getweeklyartistchart',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -220,18 +237,20 @@ class TagApi extends BaseApi
     }
 
     /**
-     * Get a list of available charts for this tag, expressed as date ranges which can be sent to the chart services
+     * Get a list of available charts for this tag, expressed as date ranges which can be sent to the chart services.
+     *
      * @param array $methodVars An array with the following required values: <i>tag</i>
+     *
      * @return array
      */
     public function getWeeklyChartList($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['tag'])) {
-            $vars = array(
-                'method' => 'tag.getweeklychartlist',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'tag.getweeklychartlist',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -252,19 +271,22 @@ class TagApi extends BaseApi
     }
 
     /**
-     * Search for a tag by name. Returns matches sorted by relevance
+     * Search for a tag by name. Returns matches sorted by relevance.
+     *
      * @deprecated as of march 15 2016, 'tag.search' method is not available
+     *
      * @param array $methodVars An array with the following required values: <i>tag</i>
+     *
      * @return array
      */
     public function search($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['tag'])) {
-            $vars = array(
-                'method' => 'tag.search',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'tag.search',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -280,6 +302,7 @@ class TagApi extends BaseApi
                         $searchResults['results'][$i]['url'] = (string) $tag->url;
                         $i++;
                     }
+
                     return $searchResults;
                 } else {
                     throw new NoResultsException('No results');
@@ -291,5 +314,4 @@ class TagApi extends BaseApi
             throw new InvalidArgumentException('You must include tag variable in the call for this method');
         }
     }
-
 }

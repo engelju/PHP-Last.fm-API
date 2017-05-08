@@ -5,25 +5,27 @@ namespace LastFmApi\Api;
 use LastFmApi\Exception\InvalidArgumentException;
 
 /**
- * Allows access to the api requests relating to geographical date
+ * Allows access to the api requests relating to geographical date.
  */
 class GeoApi extends BaseApi
 {
-
     /**
      * Get all events in a specific location by country or city name.
+     *
      * @deprecated as of march 15 2016, 'geo.getevents' service is not available
+     *
      * @param array $methodVars An array with the following required values: <i>location</i> and optional values: <i>distance</i>, <i>page</i>
+     *
      * @return array
      */
     public function getEvents($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['location'])) {
-            $vars = array(
-                'method' => 'geo.getevents',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'geo.getevents',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -60,6 +62,7 @@ class GeoApi extends BaseApi
                     $events['events'][$i]['url'] = (string) $event->url;
                     $i++;
                 }
+
                 return $events;
             } else {
                 return false;
@@ -70,18 +73,20 @@ class GeoApi extends BaseApi
     }
 
     /**
-     * Get the most popular artists on Last.fm by country
+     * Get the most popular artists on Last.fm by country.
+     *
      * @param array $methodVars An array with the following required values: <i>country</i> and optional value: <i>limit</i>
+     *
      * @return array
      */
     public function getTopArtists($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['country'])) {
-            $vars = array(
-                'method' => 'geo.gettopartists',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'geo.gettopartists',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -109,18 +114,20 @@ class GeoApi extends BaseApi
     }
 
     /**
-     * Get the most popular tracks on Last.fm last week by country
+     * Get the most popular tracks on Last.fm last week by country.
+     *
      * @param array $methodVars An array with the following required values: <i>country</i> and optional value: <i>limit</i>, <i>location</i>, <i>page</i>
+     *
      * @return array
      */
     public function getTopTracks($methodVars)
     {
         // Check for required variables
         if (!empty($methodVars['country'])) {
-            $vars = array(
-                'method' => 'geo.gettoptracks',
-                'api_key' => $this->auth->apiKey
-            );
+            $vars = [
+                'method'  => 'geo.gettoptracks',
+                'api_key' => $this->auth->apiKey,
+            ];
             $vars = array_merge($vars, $methodVars);
 
             if ($call = $this->apiGetCall($vars)) {
@@ -150,5 +157,4 @@ class GeoApi extends BaseApi
             throw new InvalidArgumentException('You must include a country variable in the call for this method');
         }
     }
-
 }

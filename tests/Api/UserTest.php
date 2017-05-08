@@ -5,18 +5,17 @@ namespace Tests\Api;
 use LastFmApi\Api\UserApi;
 
 /**
- * Tests user api calls
+ * Tests user api calls.
  *
  * @author Marcos Peña
  */
 class UserTest extends BaseNotAuthenticatedApiTest
 {
-
     private $userApi;
 
     const USERNAME_NAME = 'RJ';
 
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         if (!$this->isApiInitiated()) {
             $this->initiateApi();
@@ -27,87 +26,86 @@ class UserTest extends BaseNotAuthenticatedApiTest
 
     public function testFriends()
     {
-        $result = $this->userApi->getFriends(array(
-            'user' => self::USERNAME_NAME,
-            'limit' => 1)
+        $result = $this->userApi->getFriends([
+            'user'  => self::USERNAME_NAME,
+            'limit' => 1, ]
         );
         $this->assertNotEmpty($result);
     }
 
     public function testLovedTracks()
     {
-        $result = $this->userApi->getLovedTracks(array(
-            'user' => self::USERNAME_NAME)
+        $result = $this->userApi->getLovedTracks([
+            'user' => self::USERNAME_NAME, ]
         );
         $this->assertNotEmpty($result);
     }
 
     public function testRecentTracks()
     {
-        $result = $this->userApi->getRecentTracks(array(
-            'user' => self::USERNAME_NAME)
+        $result = $this->userApi->getRecentTracks([
+            'user' => self::USERNAME_NAME, ]
         );
         $this->assertNotEmpty($result);
     }
 
     public function testTopAlbums()
     {
-        $result = $this->userApi->getTopAlbums(array(
-            'user' => self::USERNAME_NAME,
-            'limit' => 1)
+        $result = $this->userApi->getTopAlbums([
+            'user'  => self::USERNAME_NAME,
+            'limit' => 1, ]
         );
         $this->assertNotEmpty($result);
     }
 
     public function testTopArtists()
     {
-        $result = $this->userApi->getTopArtists(array(
-            'user' => self::USERNAME_NAME,
-            'limit' => 1)
+        $result = $this->userApi->getTopArtists([
+            'user'  => self::USERNAME_NAME,
+            'limit' => 1, ]
         );
         $this->assertNotEmpty($result);
     }
 
     public function testTopTags()
     {
-        $result = $this->userApi->getTopTags(array(
-            'user' => self::USERNAME_NAME,
-            'limit' => 1)
+        $result = $this->userApi->getTopTags([
+            'user'  => self::USERNAME_NAME,
+            'limit' => 1, ]
         );
         $this->assertNotEmpty($result);
     }
 
     public function testTopTracks()
     {
-        $result = $this->userApi->getTopTracks(array(
-            'user' => self::USERNAME_NAME,
-            'limit' => 1)
+        $result = $this->userApi->getTopTracks([
+            'user'  => self::USERNAME_NAME,
+            'limit' => 1, ]
         );
         $this->assertNotEmpty($result);
     }
 
     public function testWeeklyAlbumChart()
     {
-        $result = $this->userApi->getWeeklyAlbumChart(array(
-            'user' => self::USERNAME_NAME)
+        $result = $this->userApi->getWeeklyAlbumChart([
+            'user' => self::USERNAME_NAME, ]
         );
         $this->assertNotEmpty($result);
     }
 
     public function testWeeklyChartList()
     {
-        $result = $this->userApi->getWeeklyChartList(array(
-            'user' => self::USERNAME_NAME)
+        $result = $this->userApi->getWeeklyChartList([
+            'user' => self::USERNAME_NAME, ]
         );
         $this->assertNotEmpty($result);
     }
 
     public function testWeeklyTrackChart()
     {
-        $result = $this->userApi->getWeeklyTrackChart(array(
-            'user' => self::USERNAME_NAME)
+        $result = $this->userApi->getWeeklyTrackChart([
+            'user' => self::USERNAME_NAME, ]
         );
         $this->assertNotEmpty($result);
     }
-
 }

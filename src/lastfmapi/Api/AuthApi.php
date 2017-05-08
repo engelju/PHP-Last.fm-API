@@ -5,62 +5,63 @@ namespace LastFmApi\Api;
 use LastFmApi\Exception\InvalidArgumentException;
 
 /**
- * File that stores api calls for getting authentication values
+ * File that stores api calls for getting authentication values.
  */
 
 /**
- * Allows access to the api requests relating to authentication
+ * Allows access to the api requests relating to authentication.
  */
 class AuthApi extends BaseApi
 {
     /**
-     * Stores the api key
-     * @access public
+     * Stores the api key.
+     *
      * @var string
      */
     public $apiKey;
 
     /**
-     * Stores the secret
-     * @access public
+     * Stores the secret.
+     *
      * @var string
      */
     public $apiSecret;
 
     /**
-     * Stores the authenticated username
-     * @access public
+     * Stores the authenticated username.
+     *
      * @var string
      */
     public $username;
 
     /**
-     * Stores the session key
-     * @access public
+     * Stores the session key.
+     *
      * @var string
      */
     public $sessionKey;
 
     /**
-     * Stores the users subscriber status
-     * @access public
-     * @var boolean
+     * Stores the users subscriber status.
+     *
+     * @var bool
      */
     public $subscriber;
 
     /**
-     * Stores the authentication token
-     * @access private
+     * Stores the authentication token.
+     *
      * @var string
      */
     public $token;
 
     /**
-     * Run when the class is created
+     * Run when the class is created.
+     *
      * @param string $method <i>getsession</i> to get a new session, <i>setsession</i> to set a current session
-     * @param array $vars An array of variables to pass to the class
+     * @param array  $vars   An array of variables to pass to the class
+     *
      * @return void
-     * @access public
      */
     public function __construct($method, $vars)
     {
@@ -99,17 +100,17 @@ class AuthApi extends BaseApi
     }
 
     /**
-     * Internal method uses to get a new session via an api call
+     * Internal method uses to get a new session via an api call.
+     *
      * @return void
-     * @access private
      */
     private function getSession()
     {
-        $vars = array(
-            'method' => 'auth.getSession',
+        $vars = [
+            'method'  => 'auth.getSession',
             'api_key' => $this->apiKey,
-            'token' => $this->token
-        );
+            'token'   => $this->token,
+        ];
         $sig = $this->apiSig($this->apiSecret, $vars);
         $vars['api_sig'] = $sig;
 
@@ -123,16 +124,16 @@ class AuthApi extends BaseApi
     }
 
     /**
-     * Internal method uses to get a new token via an api call
+     * Internal method uses to get a new token via an api call.
+     *
      * @return void
-     * @access private
      */
     private function getToken()
     {
-        $vars = array(
-            'method' => 'auth.getToken',
-            'api_key' => $this->apiKey
-        );
+        $vars = [
+            'method'  => 'auth.getToken',
+            'api_key' => $this->apiKey,
+        ];
 
         $sig = $this->apiSig($this->apiSecret, $vars);
         $vars['api_sig'] = $sig;

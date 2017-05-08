@@ -1,8 +1,9 @@
 <?php
 
 namespace LastFmApi\Exception;
+
 /**
- * ConnectionException
+ * ConnectionException.
  *
  * @author Marcos Peña
  */
